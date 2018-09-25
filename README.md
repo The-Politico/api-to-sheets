@@ -1,64 +1,46 @@
-Welcome to the AWS CodeStar sample web application
-==================================================
+# API To Sheets
+An express API with access to your Google Spreadsheets.
 
-This sample code helps get you started with a simple Node.js web service deployed by AWS CloudFormation to AWS Lambda and Amazon API Gateway.
+## Making A Google Service Account
+In order to use this app, you're going to need to set up a service account in the Google API. This account will serve to handle permissions for individual files. Think of it as the Gmail account for a bot that runs this API. Want that bot to have access to a spreadsheet? Share it with it. Want it to have access to a whole directory of Spreadsheets automatically? You can share that with the bot too, and any spreadsheets made in it will be automatically shared.
 
-What's Here
------------
+To make a new service account, first you'll need a project in the developer console.
+- Go to [the developer console](https://console.developers.google.com/iam-admin/iam).
+- At the top header, you should see a dropdown to select a project. Choose one to go to its admin, or make a new one.
+- On the left tab, go to `Service accounts`.
+- Click `Create Service Account`.
+- Give it a name and click `Create`
+- Give it the role of `Editor` and click `Continue`.
+- Click `Create Key` to get a one-time credentials file which you'll need to configure this app.
 
-This sample includes:
+## Config
 
-* README.md - this file
-* buildspec.yml - this file is used by AWS CodeBuild to package your
-  application for deployment to AWS Lambda
-* index.js - this file contains the sample Node.js code for the web service
-* template.yml - this file contains the AWS Serverless Application Model (AWS SAM) used
-  by AWS CloudFormation to deploy your application to AWS Lambda and Amazon API
-  Gateway.
-* tests/ - this directory contains unit tests for your application
+### Environment Variables
+Make a copy of the env template to use for your variables.
 
+```
+$ cp .env.template .env
+```
 
-What Do I Do Next?
-------------------
+Open up `.env` and fill it out.
 
-If you have checked out a local copy of your repository you can start making
-changes to the sample code.  We suggest making a small change to index.js first,
-so you can see how changes pushed to your project's repository are automatically
-picked up by your project pipeline and deployed to AWS Lambda and Amazon API Gateway.
-(You can watch the pipeline progress on your AWS CodeStar project dashboard.)
-Once you've seen how that works, start developing your own code, and have fun!
+- GAPI_PRIVATE_KEY: This is found in the credentials file you received after making your service account (see [Making A Google Service Account]('#making-a-google-service-account')) under the `private_key` key. It should be copied completely from `"` to `"` with the `\n` characters as well.
+- GAPI_CLIENT_EMAIL: This is also found in the service account credentials file under the `client_email` key.
+- PUBLIC_TOKEN: This token will be used for authentication in public apps. See [Authentication]('#authentication') for more.
+- PRIVATE_TOKEN: This token will be used for authentication in private apps. See [Authentication]('#authentication') for more.
 
-To run your tests locally, go to the root directory of the
-sample code and run the `npm test` command, which
-AWS CodeBuild also runs through your `buildspec.yml` file.
+### Sheets
+This app is meant to be able to handle multiple sheets at once. These are configured in [`sheets.json`]('./sheets.json') using the following schema for each sheet:
+```javascript
+{
+  "id": "", // the Id of the Google sheet found in the URL
+  "slug": "test", // the slug to use for this API when referencing this sheet. These must be unique.
+  "auth": "" // The authentication schema to use. See Authentication for more.
+},
+```
 
-To test your new code during the release process, modify the existing tests or
-add tests to the tests directory. AWS CodeBuild will run the tests during the
-build stage of your project pipeline. You can find the test results
-in the AWS CodeBuild console.
+Each entry in this json file will translate to a new set of routes from which to manipulate it. See [Routes]('#routes') for more.
 
-Learn more about AWS CodeBuild and how it builds and tests your application here:
-https://docs.aws.amazon.com/codebuild/latest/userguide/concepts.html
+## Authentication
 
-Learn more about AWS Serverless Application Model (AWS SAM) and how it works here:
-https://github.com/awslabs/serverless-application-model/blob/master/HOWTO.md
-
-AWS Lambda Developer Guide:
-http://docs.aws.amazon.com/lambda/latest/dg/deploying-lambda-apps.html
-
-Learn more about AWS CodeStar by reading the user guide, and post questions and
-comments about AWS CodeStar on our forum.
-
-User Guide: http://docs.aws.amazon.com/codestar/latest/userguide/welcome.html
-
-Forum: https://forums.aws.amazon.com/forum.jspa?forumID=248
-
-What Should I Do Before Running My Project in Production?
-------------------
-
-AWS recommends you review the security best practices recommended by the framework
-author of your selected sample application before running it in production. You
-should also regularly review and apply any available patches or associated security
-advisories for dependencies used within your application.
-
-Best Practices: https://docs.aws.amazon.com/codestar/latest/userguide/best-practices.html?icmpid=docs_acs_rm_sec
+API To Sheets comes with a optional token schema with both public and private tokens. The Public Token should be used for apps that are available to the public whereas the Private Token should only be used in cases with proper authentication. For example, you might want to be able to append rows to a sheet from a public app, but only read rows in that sheet from the admin behind a login screen.
