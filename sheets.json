@@ -1,16 +1,11 @@
 [
   {
-    "id": "1SJL1DSoKH1YvF7IEwsdhv5ut82IIuPzgwR5nVfKxyCI",
-    "slug": "test",
+    "id": "1UWG4afoPzKVRdUF8-7nc5JK5yy1mDC54WSgi5xKgsaE",
+    "slug": "is-this-true-tipline",
     "auth": {
       "read": "private_token",
       "write": "private_token",
       "append": "public_token"
     }
-  },
-  {
-    "id": "1wdzBbOW-zDfPmuTksQMmQZEnsrH7PtZswkW9J24rHbE",
-    "slug": "test-2",
-    "auth": "private_token"
   }
 ]
