@@ -14,7 +14,8 @@ exports.get = (event, context, callback) => {
 
 exports.post = (event, context, callback) => {
   let resp = {};
-  // console.log(event);
+  console.log('event', event);
+  console.log('context', context);
 
   // if there is no method or sheet Id
   if (!event.body.method || !event.body.sheet) {
