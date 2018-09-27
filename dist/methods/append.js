@@ -16,19 +16,19 @@ exports.default = (client, auth, data) => {
 
   if (!auth) {
     resp = {
-      statusCode: 400,
+      status: 400,
       body: 'Request requires an authentication token.'
     };
   } else if (!(0, _authenticate2.default)(authSchema, auth)) {
     resp = {
-      statusCode: 403,
+      status: 403,
       body: 'Invalid authentication token.'
     };
   } else {
     return client.addRow(data).then(d => {
       return new Promise((resolve, reject) => {
         resp = {
-          statusCode: 200,
+          status: 200,
           body: 'OK'
         };
         resolve(resp);
@@ -36,7 +36,7 @@ exports.default = (client, auth, data) => {
     }).catch(err => {
       return new Promise((resolve, reject) => {
         resp = {
-          statusCode: 500,
+          status: 500,
           body: 'Something went wrong.'
         };
         console.error(err);

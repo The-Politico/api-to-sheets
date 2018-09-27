@@ -6,7 +6,7 @@ export default (client, auth, data) => {
 
   if (!auth) {
     resp = {
-      statusCode: 400,
+      status: 400,
       body: 'Request requires an authentication token.',
     };
   } else if (!authenticate(authSchema, auth)) {
@@ -19,7 +19,7 @@ export default (client, auth, data) => {
       .then(d => {
         return new Promise((resolve, reject) => {
           resp = {
-            statusCode: 200,
+            status: 200,
             body: d,
           };
           resolve(resp);
@@ -28,7 +28,7 @@ export default (client, auth, data) => {
       .catch(err => {
         return new Promise((resolve, reject) => {
           resp = {
-            statusCode: 500,
+            status: 500,
             body: 'Something went wrong.',
           };
           console.error(err);
