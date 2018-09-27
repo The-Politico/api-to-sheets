@@ -19,7 +19,21 @@ Parameters:
 #       Type: Canary10Percent5Minutes
 
 Resources:
-  APIToSheets-Post:
+  APIToSheetsGet:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.get
+      Runtime: nodejs8.10
+      Role:
+        Fn::ImportValue:
+          !Join ['-', [!Ref 'ProjectId', !Ref 'AWS::Region', 'LambdaTrustRole']]
+      Events:
+        GetEvent:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+  APIToSheetsPost:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.post
