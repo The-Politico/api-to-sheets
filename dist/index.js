@@ -28,19 +28,30 @@ var _methods = require("./methods");
 
 var _methods2 = _interopRequireDefault(_methods);
 
+var _bodyParser = require("body-parser");
+
+var _bodyParser2 = _interopRequireDefault(_bodyParser);
+
+var _cors = require("cors");
+
+var _cors2 = _interopRequireDefault(_cors);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const server = (0, _express2.default)();
-server.use(_express2.default.json());
+server.use(_bodyParser2.default.json({
+  type: ['application/json', 'text/plain']
+}));
+server.use((0, _cors2.default)());
 server.get('', (req, res) => {
   res.status(200);
   res.send('OK');
 });
 server.post('', (req, res) => {
-  // if there is no method or sheet Id
+  // if there is no method or sheet
   if (!req.body.method || !req.body.sheet) {
     res.status(400);
-    res.send('Request needs a "method" and "sheet"');
+    res.send('Request needs a "method" and "sheet."');
     return;
   } // if the method doesn't exist
 

@@ -5,9 +5,15 @@ import keys from 'lodash/keys';
 import GAPI from './gapi';
 import sheets from '../sheets.json';
 import methods from './methods';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 const server = express();
-server.use(express.json());
+server.use(bodyParser.json({
+  type: ['application/json', 'text/plain'],
+}));
+
+server.use(cors());
 
 server.get('', (req, res) => {
   res.status(200);
@@ -15,10 +21,10 @@ server.get('', (req, res) => {
 });
 
 server.post('', (req, res) => {
-  // if there is no method or sheet Id
+  // if there is no method or sheet
   if (!req.body.method || !req.body.sheet) {
     res.status(400);
-    res.send('Request needs a "method" and "sheet"');
+    res.send('Request needs a "method" and "sheet."');
     return;
   }
 
