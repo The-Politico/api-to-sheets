@@ -2,6 +2,9 @@
   {
     "id": "1UWG4afoPzKVRdUF8-7nc5JK5yy1mDC54WSgi5xKgsaE",
     "slug": "is-this-true-tipline",
+    "options": {
+      "sanitize": false
+    },
     "auth": {
       "read": "private_token",
       "write": "private_token",

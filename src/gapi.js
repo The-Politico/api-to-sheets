@@ -6,6 +6,7 @@ class GAPI {
 
     this.doc = new GoogleSpreadsheet(config.id);
     this.authSchema = config.auth;
+    this.options = config.options;
 
     this.creds = {
       private_key: (process.env.GAPI_PRIVATE_KEY + '').replace(/\\n/g, '\n'), // dotenv escapes "\n" characters which should be rendered
@@ -25,6 +26,7 @@ class GAPI {
   getInfo () {
     return new Promise((resolve, reject) => {
       this.doc.getInfo((err, info) => {
+        console.log(typeof err);
         if (err) reject(err);
         resolve(info);
       });
