@@ -10,5 +10,17 @@
       "write": "private_token",
       "append": "public_token"
     }
+  },
+  {
+    "id": "1F7T52bcgAuhSXrmjKkdeAr5eoGVL8tDs6GkFjs4Barg",
+    "slug": "2020-debate-speaking-times",
+    "options": {
+      "sanitize": true
+    },
+    "auth": {
+      "read": "private_token",
+      "write": "private_token",
+      "append": "public_token"
+    }
   }
 ]
